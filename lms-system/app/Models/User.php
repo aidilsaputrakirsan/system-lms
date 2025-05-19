@@ -43,15 +43,21 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Import_Export_Log::class);
     }
 
-    // Additional methods that may be needed based on the ERD
-    public function getCourses()
+    public function courses()
     {
-        // To be implemented when Course model is created
+        return $this->hasMany(Course::class);
     }
 
-    public function getEnrollments()
+    public function enrollments()
     {
-        // To be implemented when Enrollment model is created
+        return $this->hasMany(Enrollment::class);
+    }
+
+    public function enrolledCourses()
+    {
+        return $this->belongsToMany(Course::class, 'enrollments')
+                    ->withPivot('status', 'enrolled_at')
+                    ->withTimestamps();
     }
 
     public function getSubmissions()
